@@ -12,11 +12,8 @@ app.use(express.json());
 const db = new database('users.db');
 db.pragma('journal_model = WAL');
 
-const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'email' varchar, 'username' varchar, 'password' varchar);"
+const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
 db.exec(createUserTable);
-
-const stmt = db.prepare('SELECT * FROM users');
-let row = stmt.get();
 
 app.get('/', (req, res) => {
         res.status(200).send("200 OK");
@@ -30,14 +27,33 @@ app.get('/app/login/', (req, res) => {
 	res.status(200).send("200 OK");
 })
 
-app.get('/app/login/:email/:username/:password/', (req, res) => {
-	let insert = "INSERT INTO users (email, username, password) VALUES ('hi', 'usernam', 'pswd');"
-	//let insert = "INSERT INTO users VALUES (req.params.email, req.params.username, req.params.password);"
-	db.exec(insert); 
-	const row = db.prepare('SELECT * FROM users');
-	console.log(row.username);	
-	res.status(200).send("Created user:" + req.params.email +  req.params.username + req.params.password);
+app.get('/app/register/:username/:password/', (req, res) => {
+	let insert = "INSERT INTO users (username, password) VALUES ('" + req.params.username + "', '" + req.params.password + "');"
+	try{    
+                db.exec(insert);
+        } catch (error) {
+		res.status(200).send("Username already taken.");
+		return        
+	} 
+	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
 })
+
+app.get('/app/truncate/', (req, res) => {
+	db.exec("DROP TABLE users");
+	const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
+	res.status(200).send("you deleted all rows in table.");
+})
+
+app.get('/app/viewDB/', (req, res) => {
+        const stmt = db.prepare('SELECT * FROM users');
+        let row = stmt.all();
+        console.log(row); 
+	res.status(200).send("Viewing Database");
+})
+
+app.use(function(req,res){
+    res.status(404).send("404 NOT FOUND");
+});
 
 app.listen(port, () => {
 	console.log("App is live on 8080");

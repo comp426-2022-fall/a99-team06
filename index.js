@@ -43,15 +43,17 @@ app.get('/app/register/:username/:password/', (req, res) => {
 	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
 })
 
-app.get('/app/addWish/:username/:password/', (req, res) => {
+app.get('/app/addGift/:username/:password/:gifts/', (req, res) => {
 	const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
 	let row = stmt.get();
-	console.log(row.count);
 	
-	//let insert = "INSERT INTO users (username, password) VALUES ('" + req.params.username + "', '" + req.params.password + "');"
-
-
-        res.status(200).send("Added wish for: " +  req.params.username + ": " + req.params.password);
+	if (row.count == 1) {
+		let insert = "INSERT INTO wishes (username, gifts) VALUES ('" + req.params.username + "', '" + req.params.gifts + "');"
+		db.exec(insert);
+		res.status(200).send("Successfully added wish for " +  req.params.username);
+	} else {
+		res.status(200).send("Incorrect username or password");
+	}
 })
 
 app.get('/app/clearDB/', (req, res) => {

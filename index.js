@@ -29,14 +29,18 @@ app.get('/app/login/', (req, res) => {
 
 app.get('/app/register/:username/:password/', (req, res) => {
 	let insert = "INSERT INTO users (username, password) VALUES ('" + req.params.username + "', '" + req.params.password + "');"
-	db.exec(insert); 
+	try{    
+                db.exec(insert);
+        } catch (error) {
+		res.status(200).send("Username already taken.");
+		return        
+	} 
 	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
 })
 
 app.get('/app/truncate/', (req, res) => {
 	db.exec("DROP TABLE users");
 	const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
-	db.exec(createUserTable);
 	res.status(200).send("you deleted all rows in table.");
 })
 
@@ -47,6 +51,9 @@ app.get('/app/viewDB/', (req, res) => {
 	res.status(200).send("Viewing Database");
 })
 
+app.use(function(req,res){
+    res.status(404).send("404 NOT FOUND");
+});
 
 app.listen(port, () => {
 	console.log("App is live on 8080");

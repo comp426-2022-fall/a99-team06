@@ -34,7 +34,6 @@ app.get('/app/login/:email/:username/:password/', (req, res) => {
 	let insert = "INSERT INTO users (email, username, password) VALUES ('hi', 'usernam', 'pswd');"
 	//let insert = "INSERT INTO users VALUES (req.params.email, req.params.username, req.params.password);"
 	db.exec(insert); 
-	const row = db.prepare('SELECT * FROM users');
 	console.log(row.username);	
 	res.status(200).send("Created user:" + req.params.email +  req.params.username + req.params.password);
 })

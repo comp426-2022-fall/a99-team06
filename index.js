@@ -7,16 +7,14 @@ import database from 'better-sqlite3'
 const app = express();
 const port = 8080;
 
-const db = new database('users.db')
+const db = new database('users.db');
+db.pragma('journal_model = WAL');
+
+const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, email VARCHAR, username VARCHAR, password VARCHAR);"
+db.exec(createUserTable);
+
 const stmt = db.prepare('SELECT * FROM users');
 let row = stmt.get();
-
-if (row === undefined ) {
-	const accessUserInit = "CREATE TABLE users (id INTEGER PRIMARY KEY, email VARCHAR, username VARCHAR, password VARCHAR);"
-	db.exec(accessUserInit)
-} else {
-	console.log("User table exists")
-}
 
 app.get('/', (req, res) => {
         res.status(200).send("200 OK");

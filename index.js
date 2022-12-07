@@ -15,6 +15,11 @@ db.pragma('journal_model = WAL');
 const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
 db.exec(createUserTable);
 
+const createWishesTable = "CREATE TABLE IF NOT EXISTS wishes (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar, 'gifts' varchar, FOREIGN KEY(username) REFERENCES users(username))"
+db.exec(createWishesTable);
+
+//db.exec("INSERT INTO wishes (username, gifts) VALUES ('usernames3', 'fakeGift');");
+
 app.get('/', (req, res) => {
         res.status(200).send("200 OK");
 })
@@ -38,9 +43,12 @@ app.get('/app/register/:username/:password/', (req, res) => {
 	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
 })
 
-app.get('/app/truncate/', (req, res) => {
+app.get('/app/clearDB/', (req, res) => {
+	db.exec("DROP TABLE wishes");
+	db.exec("CREATE TABLE IF NOT EXISTS wishes (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar, 'gifts' varchar, FOREIGN KEY(username) REFERENCES users(username))");
 	db.exec("DROP TABLE users");
-	const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
+        const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
+        db.exec(createUserTable)	
 	res.status(200).send("you deleted all rows in table.");
 })
 
@@ -48,6 +56,10 @@ app.get('/app/viewDB/', (req, res) => {
         const stmt = db.prepare('SELECT * FROM users');
         let row = stmt.all();
         console.log(row); 
+
+	const stmt2 = db.prepare('SELECT * FROM wishes');
+	let row2 = stmt2.all();
+	console.log(row2);
 	res.status(200).send("Viewing Database");
 })
 

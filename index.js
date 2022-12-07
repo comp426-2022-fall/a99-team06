@@ -43,6 +43,17 @@ app.get('/app/register/:username/:password/', (req, res) => {
 	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
 })
 
+app.get('/app/addWish/:username/:password/', (req, res) => {
+	const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
+	let row = stmt.get();
+	console.log(row.count);
+	
+	//let insert = "INSERT INTO users (username, password) VALUES ('" + req.params.username + "', '" + req.params.password + "');"
+
+
+        res.status(200).send("Added wish for: " +  req.params.username + ": " + req.params.password);
+})
+
 app.get('/app/clearDB/', (req, res) => {
 	db.exec("DROP TABLE wishes");
 	db.exec("CREATE TABLE IF NOT EXISTS wishes (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar, 'gifts' varchar, FOREIGN KEY(username) REFERENCES users(username))");

@@ -1,0 +1,19 @@
+{
+  "name": "gift-wish-list",
+  "version": "1.0.0",
+  "description": "An app to create a shopping gift wish list for yourself.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZachCairns1/a99-team06.git"
+  },
+  "author": "ZachCairns1",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/ZachCairns1/a99-team06/issues"
+  },
+  "homepage": "https://github.com/ZachCairns1/a99-team06#readme"
+}

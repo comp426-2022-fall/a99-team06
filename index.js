@@ -63,6 +63,12 @@ app.get('/app/viewDB/', (req, res) => {
 	res.status(200).send("Viewing Database");
 })
 
+app.get('/app/viewProfile/:username/:password/', (req, res) => {
+	
+	db.exec("SELECT COUNT(*) FROM users WHERE username = '" + req.params.username + "' AND password = '" + req.params.password + "';");
+	const stmt = db.prepare("SELECT COUNT(*) FROM users WHERE username = '" + req.params.username + "' AND password = '" + req.params.password + "';");		
+});
+
 app.use(function(req,res){
     res.status(404).send("404 NOT FOUND");
 });

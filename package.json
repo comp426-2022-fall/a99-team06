@@ -4,7 +4,7 @@
   "description": "An app to create a shopping gift wish list for yourself.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node index.js"
   },
   "repository": {
     "type": "git",

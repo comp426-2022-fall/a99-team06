@@ -6,6 +6,7 @@ import database from 'better-sqlite3'
 
 const app = express();
 const port = 8080;
+app.user(express.urlencoded( { extended: true }));
 
 const db = new database('users.db');
 db.pragma('journal_model = WAL');

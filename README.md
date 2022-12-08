@@ -28,7 +28,7 @@ We have assembled a simple setup to-do list to help you get started using our ap
 http://localhost:8080/app/addGift/zach/123/cookies.
     **This adds a cookie to my gift list!**
 <img width="999" alt="Screen Shot 2022-12-07 at 8 01 20 PM" src="https://user-images.githubusercontent.com/69776292/206330933-8158d45c-44db-46ed-ac81-feaf54bc5637.png">
-This is an example of my gift wish list for the holidays. You can see I have 5 items I want as of right now.
+This is an example of zach's gift wish list for the holidays. His username is 'zach', his password is '123' and he wants 5 items.
 
 
 #8. Fuller detail of endpoints is in the /docs/ folder.

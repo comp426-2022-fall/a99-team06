@@ -90,13 +90,15 @@ app.get('/app/clearDB/', (req, res) => {
 })
 
 app.get('/app/viewDB/', (req, res) => {
+	
         const stmt = db.prepare('SELECT * FROM users');
         let row = stmt.all();
+	console.log(row);
 
 	const stmt2 = db.prepare('SELECT * FROM wishes');
 	let row2 = stmt2.all();
 	console.log(row2);
-	res.status(200).send(row);
+	res.status(200).send(JSON.stringify({"users": row, "wishes": row2}));
 })
 
 app.get('/app/viewProfile/:username/:password/', (req, res) => {

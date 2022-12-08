@@ -16,7 +16,7 @@ We have assembled a simple setup to-do list to help you get started using our ap
         2. better-sqlite3 (database)
         3. Morgan (logging)
         4. fs (writing the logging to a file)
-#3. Now that you have installed all the required dependencies, it's time to run the app! To do so, please type out npm run.
+#3. Now that you have installed all the required dependencies, it's time to run the app! To do so, please type out **npm run start**.
 
 #4. After completing the last step, there should be a line printed out to your terminal saying "App is live on 8080". This is great! The app is now live.
 

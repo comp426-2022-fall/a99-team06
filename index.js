@@ -34,7 +34,7 @@ app.get('/app/', (req, res) => {
 })
 
 app.get('/app/register/', (req, res) => {
-	res.status(200).send("Welcome to the register page. To create an account, you must add your username/password to the url body like so: localhost:8080/app/register/yourUsername/yourPassword/");
+	res.status(200).send("Welcome to the register page! To create an account, you must add your username/password to the url body like so: localhost:8080/app/register/yourUsername/yourPassword/");
 })
 
 app.get('/app/register/:username/:password/', (req, res) => {

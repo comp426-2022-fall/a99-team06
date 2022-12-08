@@ -55,7 +55,7 @@ app.get('/app/addGift/:username/:password/:gifts/', (req, res) => {
 	if (row.count == 1) {
 		let insert = "INSERT INTO wishes (username, gifts) VALUES ('" + req.params.username + "', '" + req.params.gifts + "');"
 		db.exec(insert);
-		res.status(200).send("Successfully added wish for " +  req.params.username);
+		res.status(200).send("Successfully added " + req.params.gifts + " for " +  req.params.username);
 	} else {
 		res.status(200).send("Incorrect username or password");
 	}
@@ -68,7 +68,6 @@ app.get('/app/deleteGift/:username/:password/:gifts/', (req, res) => {
 	        if (row.count == 1) {
 			const stmt2 = db.prepare("SELECT COUNT(*) AS count FROM wishes WHERE username='" + req.params.username + "' AND gifts='" + req.params.gifts + "'");
 			let row2 = stmt.get();
-			console.log(row2);
 			if (row2.count > 0) {
 				let del = "DELETE FROM wishes WHERE username='" + req.params.username + "' AND gifts='" + req.params.gifts + "';"
 				db.exec(del);
@@ -93,27 +92,23 @@ app.get('/app/clearDB/', (req, res) => {
 app.get('/app/viewDB/', (req, res) => {
         const stmt = db.prepare('SELECT * FROM users');
         let row = stmt.all();
-        console.log(row); 
 
 	const stmt2 = db.prepare('SELECT * FROM wishes');
 	let row2 = stmt2.all();
 	console.log(row2);
-	res.status(200).send("Viewing Database");
+	res.status(200).send(row);
 })
 
 app.get('/app/viewProfile/:username/:password/', (req, res) => {
 	const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
         let row = stmt.get();
-        console.log(row.count);	
 	if(row.count == 1) {
 		const stmt2 = db.prepare("SELECT gifts FROM wishes WHERE username='" + req.params.username + "';");
         	let row2 = stmt2.all();
-        	console.log(row2);	
-		res.status(200).send("Successful username/password. Your gifts will be shown.")
+		res.status(200).send(row2)
 		return;
 	}
 	else {
-		console.log("wrong password/username combo");	
 		res.status(200).send("Incorrect username/password combination");	
 	}
 });
@@ -121,7 +116,6 @@ app.get('/app/viewProfile/:username/:password/', (req, res) => {
 app.get('/app/deleteProfile/:username/:password/', (req, res) => {
         const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
         let row = stmt.get();
-        console.log(row.count);
         if(row.count == 1) {
                 let stmt2 = "DELETE FROM wishes WHERE username='" + req.params.username + "';";
                 db.exec(stmt2);
@@ -131,7 +125,6 @@ app.get('/app/deleteProfile/:username/:password/', (req, res) => {
                 return;
         }
         else {
-                console.log("wrong password/username combo");
                 res.status(200).send("Incorrect username/password combination");
         }
 });
@@ -139,7 +132,6 @@ app.get('/app/deleteProfile/:username/:password/', (req, res) => {
 app.get('/app/updateProfile/:username/:password/:newpassword', (req, res) => {
         const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
         let row = stmt.get();
-        console.log(row.count);
         if(row.count == 1) {
                 let stmt2 = "UPDATE users SET password='" + req.params.newpassword + "'WHERE username ='" + req.params.username + "'";
                 db.exec(stmt2);
@@ -147,7 +139,6 @@ app.get('/app/updateProfile/:username/:password/:newpassword', (req, res) => {
                 return;
         }
         else {
-                console.log("wrong password/username combo");
                 res.status(200).send("Incorrect username/password combination");
         }
 });

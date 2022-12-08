@@ -20,8 +20,9 @@ The `register` endpoint exists only to redirect users to the correct endpoint fo
 ## /app/register/:username/:password/
 Responds "200 OK"
 
-The `register` endpoint redirects users to this endpoint and instructs them on how to use it. This endpoint works by receiving the username and password information as URL-encoded data and creates a new user in the database.
+This endpoint takes the username and password encoded in the URL and creates a new user in the database.
 
 ### Response body
-> `curl http://localhost:8080/app/register/:username/:password/`  
-> `{"message": <TODO: fill in message>}`
+> `curl http://localhost:8080/app/register/example_user/12345/`  
+
+> `{"message": <TODO: fill in message for user=example_user and password=12345>}`

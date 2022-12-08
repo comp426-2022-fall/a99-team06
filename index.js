@@ -56,6 +56,26 @@ app.get('/app/addGift/:username/:password/:gifts/', (req, res) => {
 	}
 })
 
+app.get('/app/deleteGift/:username/:password/:gifts/', (req, res) => {
+	        const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
+	        let row = stmt.get();
+
+	        if (row.count == 1) {
+			const stmt2 = db.prepare("SELECT COUNT(*) AS count FROM wishes WHERE username='" + req.params.username + "' AND gifts='" + req.params.gifts + "'");
+			let row2 = stmt.get();
+			console.log(row2);
+			if (row2.count > 0) {
+				let del = "DELETE FROM wishes WHERE username='" + req.params.username + "' AND gifts='" + req.params.gifts + "';"
+				db.exec(del);
+	                	res.status(200).send("Successfully deleted wish for " +  req.params.username);
+			} else {
+	                	res.status(200).send("That wish does not exist for " +  req.params.username);
+			}
+	        } else {
+	                res.status(200).send("Incorrect username or password");
+	        }
+})
+
 app.get('/app/clearDB/', (req, res) => {
 	db.exec("DROP TABLE wishes");
 	db.exec("CREATE TABLE IF NOT EXISTS wishes (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar, 'gifts' varchar, FOREIGN KEY(username) REFERENCES users(username))");

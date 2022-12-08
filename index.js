@@ -26,15 +26,15 @@ db.exec(createWishesTable);
 //db.exec("INSERT INTO wishes (username, gifts) VALUES ('usernames3', 'fakeGift');");
 
 app.get('/', (req, res) => {
-        res.status(200).send("200 OK");
+	res.status(200).send(JSON.stringify({"message": "The API Works! Welcome to gift wish list! (200)"}));        
 })
 
 app.get('/app/', (req, res) => {
-	res.status(200).send("Welcome to gift wish list!");
+	res.status(200).send(JSON.stringify({"message": "The API Works! Welcome to gift wish list! To get started, go to /app/register endpoint. (200)"}));
 })
 
 app.get('/app/register/', (req, res) => {
-	res.status(200).send("Welcome to the register page! To create an account, you must add your username/password to the url body like so: localhost:8080/app/register/yourUsername/yourPassword/");
+	res.status(200).send(JSON.stringify({"message": "Welcome to the register page! To create an account, you must add your username/password to the url body like so: localhost:8080/app/register/yourUsername/yourPassword/. (200)"}));
 })
 
 app.get('/app/register/:username/:password/', (req, res) => {
@@ -42,10 +42,10 @@ app.get('/app/register/:username/:password/', (req, res) => {
 	try{    
                 db.exec(insert);
         } catch (error) {
-		res.status(200).send("Username already taken.");
+		res.status(200).send(JSON.stringify({"message": "Username already taken. (200)"}));
 		return        
 	} 
-	res.status(200).send("Created user: " +  req.params.username + ": " + req.params.password);
+	res.status(200).send(JSON.stringify({"message": "Created user: " +  req.params.username + ": " + req.params.password + " (200)"}));
 })
 
 app.get('/app/addGift/:username/:password/:gifts/', (req, res) => {
@@ -55,9 +55,9 @@ app.get('/app/addGift/:username/:password/:gifts/', (req, res) => {
 	if (row.count == 1) {
 		let insert = "INSERT INTO wishes (username, gifts) VALUES ('" + req.params.username + "', '" + req.params.gifts + "');"
 		db.exec(insert);
-		res.status(200).send("Successfully added " + req.params.gifts + " for " +  req.params.username);
+		res.status(200).send(JSON.stringify({"message": "Successfully added " + req.params.gifts + " for " +  req.params.username + " (200)"}));
 	} else {
-		res.status(200).send("Incorrect username or password");
+		res.status(200).send(JSON.stringify({"message": "Incorrect username or password (200)"}));
 	}
 })
 
@@ -71,9 +71,9 @@ app.get('/app/deleteGift/:username/:password/:gifts/', (req, res) => {
 			if (row2.count > 0) {
 				let del = "DELETE FROM wishes WHERE username='" + req.params.username + "' AND gifts='" + req.params.gifts + "';"
 				db.exec(del);
-	                	res.status(200).send("Successfully deleted wish for " +  req.params.username);
+	                	res.status(200).send(JSON.stringify({"message": "Successfully deleted wish for " +  req.params.username + " (200)"}));
 			} else {
-	                	res.status(200).send("That wish does not exist for " +  req.params.username);
+	                	res.status(200).send(JSON.stringify({"message": "That wish does not exist for " +  req.params.username + " (200)"}));
 			}
 	        } else {
 	                res.status(200).send("Incorrect username or password");
@@ -86,7 +86,7 @@ app.get('/app/clearDB/', (req, res) => {
 	db.exec("DROP TABLE users");
         const createUserTable = "CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY AUTOINCREMENT, 'username' varchar type UNIQUE, 'password' varchar);"
         db.exec(createUserTable)	
-	res.status(200).send("you deleted all rows in table.");
+	res.status(200).send(JSON.stringify({"message": "Deleted all rows in table. (200)"}));
 })
 
 app.get('/app/viewDB/', (req, res) => {
@@ -98,7 +98,7 @@ app.get('/app/viewDB/', (req, res) => {
 	const stmt2 = db.prepare('SELECT * FROM wishes');
 	let row2 = stmt2.all();
 	console.log(row2);
-	res.status(200).send(JSON.stringify({"users": row, "wishes": row2}));
+	res.status(200).send(JSON.stringify({"users": row, "wishes": row2, "message": "Successfully viewing DB (200)"}));
 })
 
 app.get('/app/viewProfile/:username/:password/', (req, res) => {
@@ -107,11 +107,11 @@ app.get('/app/viewProfile/:username/:password/', (req, res) => {
 	if(row.count == 1) {
 		const stmt2 = db.prepare("SELECT gifts FROM wishes WHERE username='" + req.params.username + "';");
         	let row2 = stmt2.all();
-		res.status(200).send(row2)
+		res.status(200).send(JSON.stringify({"Gifts" : row2, "message": "Successfully viewing profile (200)"}))
 		return;
 	}
 	else {
-		res.status(200).send("Incorrect username/password combination");	
+		res.status(200).send(JSON.stringify({"message": "Incorrect username/password combination (200)"}));	
 	}
 });
 
@@ -123,11 +123,11 @@ app.get('/app/deleteProfile/:username/:password/', (req, res) => {
                 db.exec(stmt2);
 		let stmt3 = "DELETE FROM users WHERE username='" + req.params.username + "';";
 		db.exec(stmt3) 
-		res.status(200).send("Successful username/password. Your account is deleted.")
+		res.status(200).send(JSON.stringify({"message": "Successful username/password. Your account is deleted. (200)"}))
                 return;
         }
         else {
-                res.status(200).send("Incorrect username/password combination");
+		res.status(200).send(JSON.stringify({"message": "Incorrect username/password combination (200)"}));
         }
 });
 
@@ -137,17 +137,17 @@ app.get('/app/updateProfile/:username/:password/:newpassword', (req, res) => {
         if(row.count == 1) {
                 let stmt2 = "UPDATE users SET password='" + req.params.newpassword + "'WHERE username ='" + req.params.username + "'";
                 db.exec(stmt2);
-                res.status(200).send("Successful username/password. Your password has been updated.")
+                res.status(200).send(JSON.stringify({"message": "Successful username/password. Your password has been updated. (200)"}))
                 return;
         }
         else {
-                res.status(200).send("Incorrect username/password combination");
+		res.status(200).send(JSON.stringify({"message": "Incorrect username/password combination (200)"}));
         }
 });
 
 
 app.use(function(req,res){
-    res.status(404).send("404 NOT FOUND");
+    res.status(404).send(JSON.stringify({"message": "404 NOT FOUND"}));
 });
 
 app.listen(port, () => {

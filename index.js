@@ -3,11 +3,16 @@
 
 import express from 'express';
 import database from 'better-sqlite3'
+import fs from 'fs'
+import morgan from 'morgan'
 
 const app = express();
 const port = 8080;
 app.use(express.urlencoded( { extended: true }));
 app.use(express.json());
+
+const accesslog = fs.createWriteStream('./access.log');
+app.use(morgan('combined', {stream:accesslog}));
 
 const db = new database('users.db');
 db.pragma('journal_model = WAL');
@@ -95,6 +100,58 @@ app.get('/app/viewDB/', (req, res) => {
 	console.log(row2);
 	res.status(200).send("Viewing Database");
 })
+
+app.get('/app/viewProfile/:username/:password/', (req, res) => {
+	const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
+        let row = stmt.get();
+        console.log(row.count);	
+	if(row.count == 1) {
+		const stmt2 = db.prepare("SELECT gifts FROM wishes WHERE username='" + req.params.username + "';");
+        	let row2 = stmt2.all();
+        	console.log(row2);	
+		res.status(200).send("Successful username/password. Your gifts will be shown.")
+		return;
+	}
+	else {
+		console.log("wrong password/username combo");	
+		res.status(200).send("Incorrect username/password combination");	
+	}
+});
+
+app.get('/app/deleteProfile/:username/:password/', (req, res) => {
+        const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
+        let row = stmt.get();
+        console.log(row.count);
+        if(row.count == 1) {
+                let stmt2 = "DELETE FROM wishes WHERE username='" + req.params.username + "';";
+                db.exec(stmt2);
+		let stmt3 = "DELETE FROM users WHERE username='" + req.params.username + "';";
+		db.exec(stmt3) 
+		res.status(200).send("Successful username/password. Your account is deleted.")
+                return;
+        }
+        else {
+                console.log("wrong password/username combo");
+                res.status(200).send("Incorrect username/password combination");
+        }
+});
+
+app.get('/app/updateProfile/:username/:password/:newpassword', (req, res) => {
+        const stmt = db.prepare("SELECT COUNT(*) AS count FROM users WHERE username='" + req.params.username + "' AND password='" + req.params.password + "'");
+        let row = stmt.get();
+        console.log(row.count);
+        if(row.count == 1) {
+                let stmt2 = "UPDATE users SET password='" + req.params.newpassword + "'WHERE username ='" + req.params.username + "'";
+                db.exec(stmt2);
+                res.status(200).send("Successful username/password. Your password has been updated.")
+                return;
+        }
+        else {
+                console.log("wrong password/username combo");
+                res.status(200).send("Incorrect username/password combination");
+        }
+});
+
 
 app.use(function(req,res){
     res.status(404).send("404 NOT FOUND");

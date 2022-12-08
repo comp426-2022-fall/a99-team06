@@ -8,7 +8,7 @@ This is the home endpoint that welcomes the user to the app and instructs them o
 ### Response body
 > `curl http://localhost:8080/app/`  
 
-> `{"message": <TODO: fill in message>}`
+> `{"message": "The API Works! Welcome to gift wish list! To get started, go to /app/register endpoint. (200)"}`
 
 
 ## /app/register/
@@ -19,7 +19,7 @@ The `register` endpoint exists only to redirect users to the correct endpoint fo
 ### Response body
 > `curl http://localhost:8080/app/register/`
   
-> `{"message": <TODO: fill in message>}`
+> `{"message": "Welcome to the register page! To create an account, you must add your username/password to the url body like so: localhost:8080/app/register/yourUsername/yourPassword/. (200)"}`
 
 
 ## /app/register/:username/:password/
@@ -30,7 +30,7 @@ This endpoint takes the username and password encoded in the URL and creates a n
 ### Response body
 > `curl http://localhost:8080/app/register/example_user/12345/`  
 
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"message": "Created user: example_user: 12345 (200)"}`
 
 
 ## /app/viewProfile/:username/:password/
@@ -41,7 +41,7 @@ This endpoint takes the username and password encoded in the URL and checks if t
 ### Response body
 > `curl http://localhost:8080/app/viewProfile/example_user/12345/`
   
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"Gifts" : [{"gifts": "iPhone"}, {"gifts": "Laptop"}], "message": "Successfully viewing profile (200)"}`
 
 
 ## /app/deleteProfile/:username/:password/
@@ -52,18 +52,18 @@ This endpoint takes the username and password encoded in the URL and checks if t
 ### Response body
 > `curl http://localhost:8080/app/deleteProfile/example_user/12345/`
   
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"message": "Successful username/password. Your account is deleted. (200)"}`
 
 
 ## /app/updateProfile/:username/:password/:newpassword'
 Responds "200 OK"
 
-This endpoint takes the username and password encoded in the URL and checks if the user exists. If it exists, the user's information is altered so that the password is updated to be the newpassword.
+This endpoint takes the username and password encoded in the URL and checks if the user exists. If it exists, the user's information is altered so that the password is updated to be the newpassword. Currently, the ability to update the user's username is not yet implemented.
 
 ### Response body
 > `curl http://localhost:8080/app/updateProfile/example_user/12345/54321`
   
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"message": "Successful username/password. Your password has been updated. (200)"}`
 
 
 ## /app/addGift/:username/:password/:gifts/
@@ -74,7 +74,7 @@ This endpoint takes the username and password encoded in the URL and checks if t
 ### Response body
 > `curl http://localhost:8080/app/addGift/example_user/12345/iPhone/`
   
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"message": "Successfully added iPhone for example_user (200)"}`
 
 
 ## /app/deleteGift/:username/:password/:gifts/
@@ -85,4 +85,10 @@ This endpoint takes the username and password encoded in the URL and checks if t
 ### Response body
 > `curl http://localhost:8080/app/deleteGift/example_user/12345/iPhone/`
   
-> `{"message": <TODO: fill in message for user=example_user and password=12345>}`
+> `{"message": "Successfully deleted wish for example_user (200)"}`
+
+
+## /app/generateCode/:username/:password/
+*Not yet implemented*
+
+This endpoint has not been implemented yet, but the goal is that it will generate a code which can be shared with friends. This code can be used by friends to view the user's wish list and have ideas for possible gifts to get.

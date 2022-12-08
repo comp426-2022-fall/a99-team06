@@ -1,7 +1,7 @@
 # Endpoint
 
 ## /app/
-Responds "Welcome to gift wish list!"
+Responds "200 OK"
 ### Response body
 `curl http://localhost:8080/app/`  
-`Welcome to gift wish list!`
+`{"message": <TODO: fill in message>`

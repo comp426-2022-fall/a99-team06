@@ -32,6 +32,8 @@ http://localhost:8080/app/addGift/zach/123/cookies.
 This is an example of zach's gift wish list for the holidays. His username is 'zach', his password is '123' and he wants 5 items right now.
 
 
-#8. Fuller detail of endpoints is in the /docs/ folder.
+#8. Fuller detail of endpoints is in the /docs/endpoints.md file.
 
-#9. Several users can be created with their own usernames and passwords and gift wish lifts. If the username/password combination doesn't match, a request won't be able to see that user's gift wish list. Users are encouraged to play around with what gifts they want and think creatively.
+#9. Several users can be created with their own usernames and passwords and gift wish lifts. If the username/password combination doesn't match, a request won't be able to see that user's gift wish list.
+
+#10. Users are encouraged to play around with what gifts they want and think creatively.

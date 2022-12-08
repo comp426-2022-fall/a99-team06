@@ -26,7 +26,7 @@ We have assembled a simple setup to-do list to help you get started using our ap
 
 #7. An important note to make here is every request made to this app dealing with users requires an authentication to be done. After completing the last step, there is now an account with username 'zach' and password '123'. To add a gift to an account I would enter the following link:
 http://localhost:8080/app/addGift/zach/123/cookies.
-    #This adds a cookie to my gift list!#
+    **This adds a cookie to my gift list!**
 
 #8. Fuller detail of endpoints is in the /docs/ folder.
 
